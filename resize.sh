@@ -33,7 +33,7 @@ newwidth="${FLAGS_width}"
 
 if [ -d "${targetdirectory}" ]
 then
-    cd "${1}"
+    cd "${targetdirectory}"
 else
     echo "Need directory as first parameter"
     flags_help
@@ -42,12 +42,13 @@ fi
 
 if [ -n "${newwidth}" ]
 then
-    newsetwidth=$2
+    newsetwidth="${newwidth}"
 fi
 
 set -u
 
 # TODO: use array of image types
+jpgcount=`find . -type f -iname "*.jpg" | wc -l`
 find . -type f -iname "*.jpg" | while read filename
    do
        newname="${filename%????}"
@@ -61,3 +62,4 @@ find . -type f -iname "*.jpg" | while read filename
        fi
        convert -resize "${newwidth}" -quality 90 "${filename}" "${newname}"
    done
+echo "converted ${jpgcount} images"
